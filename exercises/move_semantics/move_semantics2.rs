@@ -3,8 +3,8 @@
 
 fn main() {
     let vec0 = Vec::new();
-
-    let mut vec1 = fill_vec(vec0);
+    let tempVec = vec0.to_vec();
+    let mut vec1 = fill_vec(tempVec);
 
     // Do not change the following line!
     println!("{} has length {} content `{:?}`", "vec0", vec0.len(), vec0);
@@ -24,18 +24,6 @@ fn fill_vec(vec: Vec<i32>) -> Vec<i32> {
 
     vec
 }
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 // So `vec0` is being *moved* into the function `fill_vec` when we call it on

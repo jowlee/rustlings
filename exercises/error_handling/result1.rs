@@ -1,6 +1,9 @@
 // result1.rs
 // Make this test pass! Scroll down for hints :)
 
+use std::fmt;
+use std::error;
+
 #[derive(PartialEq,Debug)]
 struct PositiveNonzeroInteger(u64);
 
@@ -10,9 +13,31 @@ enum CreationError {
     Zero,
 }
 
+impl fmt::Display for CreationError {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        f.write_str((self as &error::Error).description())
+    }
+}
+
+impl error::Error for CreationError {
+    fn description(&self) -> &str {
+        match *self {
+            CreationError::Negative => "Negative",
+            CreationError::Zero => "Zero",
+        }
+    }
+}
+
+
 impl PositiveNonzeroInteger {
     fn new(value: i64) -> Result<PositiveNonzeroInteger, CreationError> {
-        Ok(PositiveNonzeroInteger(value as u64))
+        if value == 0 {
+            Err(CreationError::Zero)
+        } else if value < 0 {
+            Err(CreationError::Negative)
+        } else {
+            Ok(PositiveNonzeroInteger(value as u64))
+        }
     }
 }
 
@@ -22,19 +47,6 @@ fn test_creation() {
     assert_eq!(Err(CreationError::Negative), PositiveNonzeroInteger::new(-10));
     assert_eq!(Err(CreationError::Zero), PositiveNonzeroInteger::new(0));
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
